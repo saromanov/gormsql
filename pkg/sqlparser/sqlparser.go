@@ -14,14 +14,18 @@ var errNotSupported = errors.New("not supported operation")
 // Parse provides parsing of sql query
 func Parse(s string) error {
 	stmt := sqlparser.NewStringTokenizer(s)
-
 	for {
 		stmt, err := sqlparser.ParseNext(stmt)
 		if err == io.EOF {
 			break
 		}
 
-		fmt.Println(stmt)
+		result := stmt.(*sqlparser.DDL)
+		if result.Action != sqlparser.CreateStr {
+			return errNotSupported
+		}
+
+		fmt.Println(result.TableSpec)
 	}
 	return nil
 }
