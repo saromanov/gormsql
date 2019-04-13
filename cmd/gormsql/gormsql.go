@@ -2,17 +2,16 @@ package main
 
 import (
 	"flag"
-	"fmt"
 
-	"github.com/saromanov/gormsql/pkg/sqlparser"
 	"github.com/saromanov/gormsql/pkg/os"
+	"github.com/saromanov/gormsql/pkg/sqlparser"
 )
 
 var (
-	sqlTablesPath = flag.String("word", "foo", "a string")
+	sqlTablesPath = flag.String("sql", "", "Path to the file .sql")
 )
 
-func createModelFromTables(path string){
+func createModelFromTables(path string) {
 	dat, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
@@ -23,12 +22,12 @@ func createModelFromTables(path string){
 		panic(err)
 	}
 }
-func run(){
+func run() {
 	if *sqlTablesPath != "" {
 		createModelFromTables(*sqlTablesPath)
 	}
 }
-func main(){
+func main() {
 	flag.Parse()
 	run()
 }
