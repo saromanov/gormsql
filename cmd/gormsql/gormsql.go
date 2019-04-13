@@ -17,7 +17,7 @@ func createModelFromTables(path string) {
 		panic(err)
 	}
 
-	err = sqlparser.Parse(dat)
+	err = sqlparser.Parse(string(dat))
 	if err != nil {
 		panic(err)
 	}
