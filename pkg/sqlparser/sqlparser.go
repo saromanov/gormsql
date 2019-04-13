@@ -25,7 +25,9 @@ func Parse(s string) error {
 			return errNotSupported
 		}
 
-		fmt.Println(result.TableSpec)
+		for _, c := range result.TableSpec.Columns {
+			fmt.Println(c)
+		}
 	}
 	return nil
 }
