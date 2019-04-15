@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/pkg/errors"
+	"github.com/saromanov/gormsql/pkg/core"
 	"github.com/xwb1989/sqlparser"
 )
 
@@ -25,9 +26,13 @@ func Parse(s string) error {
 			return errNotSupported
 		}
 
+		table := &core.Table{Name: result.Table.Name.String()}
+		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
-			fmt.Println(c)
+			columns = append(columns, core.Column{Name: c.Name.String()})
 		}
+		table.Columns = columns
+		fmt.Println(table)
 	}
 	return nil
 }
