@@ -30,10 +30,24 @@ func Parse(s string) error {
 		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
 			fmt.Println(c.Type)
-			columns = append(columns, core.Column{Name: c.Name.String()})
+			columns = append(columns, core.Column{
+				Name:        c.Name.String(),
+				Annotations: consuructColumnAnnotation(c.Type),
+			})
 		}
 		table.Columns = columns
 		fmt.Println(table)
 	}
 	return nil
+}
+
+func consuructColumnAnnotation(c sqlparser.ColumnType) string {
+	response := `gorm:"`
+	if c.NotNull {
+		response += "NOT NULL;"
+	}
+	if c.Autoincrement {
+		response += "AUTOINCREMENT;"
+	}
+	return response + `"`
 }
