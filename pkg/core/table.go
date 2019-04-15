@@ -7,5 +7,7 @@ type Table struct {
 }
 
 type Column struct {
-	Name string
+	Name        string
+	Annotations string
+	Type        string
 }

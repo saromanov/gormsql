@@ -29,6 +29,7 @@ func Parse(s string) error {
 		table := &core.Table{Name: result.Table.Name.String()}
 		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
+			fmt.Println(c.Type)
 			columns = append(columns, core.Column{Name: c.Name.String()})
 		}
 		table.Columns = columns
