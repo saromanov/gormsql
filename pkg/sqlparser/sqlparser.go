@@ -49,5 +49,8 @@ func consuructColumnAnnotation(c sqlparser.ColumnType) string {
 	if c.Autoincrement {
 		response += "AUTOINCREMENT;"
 	}
+	if c.Default != nil {
+		response += fmt.Sprintf(`DEFAULT:"%s"`, string(c.Default.Val))
+	}
 	return response + `"`
 }
