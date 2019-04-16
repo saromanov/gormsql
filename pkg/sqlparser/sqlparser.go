@@ -36,7 +36,6 @@ func Parse(s string) error {
 			})
 		}
 		table.Columns = columns
-		fmt.Println(table)
 	}
 	return nil
 }
