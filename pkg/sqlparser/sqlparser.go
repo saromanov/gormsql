@@ -13,7 +13,8 @@ import (
 var errNotSupported = errors.New("not supported operation")
 
 // Parse provides parsing of sql query
-func Parse(s string) error {
+func Parse(s string) (*core.Table, error) {
+	table := &core.Table{}
 	stmt := sqlparser.NewStringTokenizer(s)
 	for {
 		stmt, err := sqlparser.ParseNext(stmt)
@@ -23,13 +24,12 @@ func Parse(s string) error {
 
 		result := stmt.(*sqlparser.DDL)
 		if result.Action != sqlparser.CreateStr {
-			return errNotSupported
+			return nil, errNotSupported
 		}
 
-		table := &core.Table{Name: result.Table.Name.String()}
+		table.Name = result.Table.Name.String()
 		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
-			fmt.Println(c.Type)
 			columns = append(columns, core.Column{
 				Name:        c.Name.String(),
 				Annotations: consuructColumnAnnotation(c.Type),
@@ -37,7 +37,7 @@ func Parse(s string) error {
 		}
 		table.Columns = columns
 	}
-	return nil
+	return table, nil
 }
 
 func consuructColumnAnnotation(c sqlparser.ColumnType) string {
