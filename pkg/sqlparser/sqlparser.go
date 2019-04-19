@@ -32,6 +32,7 @@ func Parse(s string) (*core.Table, error) {
 		for _, c := range result.TableSpec.Columns {
 			columns = append(columns, core.Column{
 				Name:        c.Name.String(),
+				Type:        c.Type.Type,
 				Annotations: consuructColumnAnnotation(c.Type),
 			})
 		}
