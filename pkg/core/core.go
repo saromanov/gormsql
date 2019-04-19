@@ -2,7 +2,10 @@
 package core
 
 import (
-	"errors"
+	"os"
+	"reflect"
+
+	"github.com/pkg/errors"
 )
 
 var errNoName = errors.New("name is not defined")
@@ -20,8 +23,25 @@ func New(t Table) *Core {
 
 // Do provides generation of the gorm tables
 func (c *Core) Do() error {
-	if c.table.Name == "" {
+	name := c.table.Name
+	if name == "" {
 		return errNoName
 	}
+
+	f, err := os.Create(name + ".go")
+	if err != nil {
+		return errors.Wrap(err, "unable to create file")
+	}
+	defer f.Close()
 	return nil
+}
+
+func (c *Core) generate() (string, error) {
+	ref := []reflect.StructField{}
+	for _, col := range c.table.Columns {
+		ref = append(ref, reflect.StructField{
+			Name: col.Name,
+		})
+	}
+	return reflect.StructOf(ref).String(), nil
 }
