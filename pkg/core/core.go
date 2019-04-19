@@ -32,6 +32,16 @@ func (c *Core) Do() error {
 	if err != nil {
 		return errors.Wrap(err, "unable to create file")
 	}
+
+	res, err := c.generate()
+	if err != nil {
+		return errors.Wrap(err, "unable to generate model")
+	}
+
+	_, err = f.Write([]byte(res))
+	if err != nil {
+		return errors.Wrap(err, "unable to write to file")
+	}
 	defer f.Close()
 	return nil
 }
