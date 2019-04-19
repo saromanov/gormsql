@@ -49,9 +49,14 @@ func (c *Core) Do() error {
 func (c *Core) generate() (string, error) {
 	ref := []reflect.StructField{}
 	for _, col := range c.table.Columns {
-		ref = append(ref, reflect.StructField{
+		v := reflect.StructField{
 			Name: col.Name,
-		})
+		}
+		ref = append(ref, v)
+		if col.Annotations != "" {
+			v.Tag = reflect.StructTag(col.Annotations)
+		}
+		ref = append(ref, v)
 	}
 	return reflect.StructOf(ref).String(), nil
 }
