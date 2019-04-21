@@ -41,6 +41,7 @@ func Parse(s string) (*core.Table, error) {
 	return table, nil
 }
 
+// constructColumnAnnotation adds gorm annotations to the model
 func consuructColumnAnnotation(c sqlparser.ColumnType) string {
 	response := `gorm:"`
 	if c.NotNull {
