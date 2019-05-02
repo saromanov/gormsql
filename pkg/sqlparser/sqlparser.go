@@ -29,8 +29,11 @@ func Parse(s string) (*core.Table, error) {
 		if result.Action != sqlparser.CreateStr {
 			return nil, errNotSupported
 		}
-
-		table.Name = result.Table.Name.String()
+		name := result.Table.Name.String()
+		if name == "" {
+			name = result.NewName.Name.String()
+		}
+		table.Name = name
 		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
 			columns = append(columns, core.Column{
