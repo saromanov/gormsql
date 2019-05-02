@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 
+	"github.com/saromanov/gormsql/pkg/core"
 	"github.com/saromanov/gormsql/pkg/os"
 	"github.com/saromanov/gormsql/pkg/sqlparser"
 )
@@ -17,8 +18,13 @@ func createModelFromTables(path string) {
 		panic(err)
 	}
 
-	err = sqlparser.Parse(string(dat))
+	table, err := sqlparser.Parse(string(dat))
 	if err != nil {
+		panic(err)
+	}
+
+	c := core.New(*table)
+	if err := c.Do(); err != nil {
 		panic(err)
 	}
 }
