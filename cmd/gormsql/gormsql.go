@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -12,17 +13,17 @@ import (
 func createModelFromTables(path string) error {
 	dat, err := ioutil.ReadFile(path)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to read from file: %v", err)
 	}
 
 	table, err := sqlparser.Parse(string(dat))
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to parse file: %v", err)
 	}
 
 	c := core.New(*table)
 	if err := c.Do(); err != nil {
-		return err
+		return fmt.Errorf("unable to apply generation: %v", err)
 	}
 	return nil
 }
@@ -40,6 +41,7 @@ func main() {
 			Usage:   "path to the dir or file",
 			Action: func(c *cli.Context) error {
 				modelPath := c.Args().First()
+				fmt.Println("MODEL: ", modelPath)
 				if err := run(modelPath); err != nil {
 					panic(err)
 				}
