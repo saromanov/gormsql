@@ -46,6 +46,7 @@ func (c *Core) Do() error {
 	return nil
 }
 
+// generate provides generating of the model
 func (c *Core) generate() (string, error) {
 	ref := []reflect.StructField{}
 	for _, col := range c.table.Columns {
