@@ -21,6 +21,9 @@ func Parse(s string) (*core.Table, error) {
 		if err == io.EOF {
 			break
 		}
+		if stmt == nil {
+			break
+		}
 
 		result := stmt.(*sqlparser.DDL)
 		if result.Action != sqlparser.CreateStr {
