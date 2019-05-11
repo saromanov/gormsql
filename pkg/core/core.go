@@ -53,7 +53,6 @@ func (c *Core) generate() (string, error) {
 		v := reflect.StructField{
 			Name: col.Name,
 		}
-		ref = append(ref, v)
 		if col.Annotations != "" {
 			v.Tag = reflect.StructTag(col.Annotations)
 		}
