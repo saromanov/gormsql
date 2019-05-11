@@ -57,6 +57,12 @@ func (c *Core) generate() (string, error) {
 		if col.Annotations != "" {
 			v.Tag = reflect.StructTag(col.Annotations)
 		}
+		switch col.Type {
+		case "varchar":
+			v.Type = reflect.TypeOf(string(""))
+		case "initeger":
+			v.Type = reflect.TypeOf(int(0))
+		}
 		ref = append(ref, v)
 	}
 	return reflect.StructOf(ref).String(), nil
