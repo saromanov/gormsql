@@ -2,9 +2,11 @@
 package core
 
 import (
+	"fmt"
 	"os"
 	"reflect"
 	"strings"
+
 	"github.com/pkg/errors"
 )
 
@@ -59,10 +61,11 @@ func (c *Core) generate() (string, error) {
 		switch col.Type {
 		case "varchar":
 			v.Type = reflect.TypeOf(string(""))
-		case "initeger":
+		case "integer":
 			v.Type = reflect.TypeOf(int(0))
 		}
 		ref = append(ref, v)
 	}
+	fmt.Println(ref)
 	return reflect.StructOf(ref).String(), nil
 }
