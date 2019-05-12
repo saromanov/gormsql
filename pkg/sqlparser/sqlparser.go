@@ -59,5 +59,8 @@ func consuructColumnAnnotation(c sqlparser.ColumnType) string {
 	if c.Default != nil {
 		response += fmt.Sprintf(`DEFAULT:"%s"`, string(c.Default.Val))
 	}
+	if c.Length != nil {
+		response += fmt.Sprintf(`SIZE:"%s"`, string(c.Default.Val))
+	}
 	return response + "`"
 }
