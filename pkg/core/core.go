@@ -6,7 +6,7 @@ import (
 	"os"
 	"reflect"
 	"strings"
-
+	"time"
 	"github.com/pkg/errors"
 )
 
@@ -61,8 +61,10 @@ func (c *Core) generate() (string, error) {
 		switch col.Type {
 		case "varchar":
 			v.Type = reflect.TypeOf(string(""))
-		case "integer":
+		case "integer", "int":
 			v.Type = reflect.TypeOf(int(0))
+		case "timestamp":
+			v.Type = reflect.TypeOf(time.Time{})
 		}
 		ref = append(ref, v)
 	}
