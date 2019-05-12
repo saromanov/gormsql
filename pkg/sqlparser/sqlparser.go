@@ -33,6 +33,9 @@ func Parse(s string) (*core.Table, error) {
 		if name == "" {
 			name = result.NewName.Name.String()
 		}
+		if result.TableSpec == nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("unexpected error on the table definition: %s", name))
+		}
 		table.Name = name
 		columns := []core.Column{}
 		for _, c := range result.TableSpec.Columns {
@@ -57,9 +60,9 @@ func consuructColumnAnnotation(c sqlparser.ColumnType) string {
 		response += "AUTOINCREMENT;"
 	}
 	if c.Default != nil {
-		response += fmt.Sprintf(`DEFAULT:"%s"`, string(c.Default.Val))
+		response += fmt.Sprintf("DEFAULT:`%s`", string(c.Default.Val))
 	}
-	if c.Length != nil {
+	if c.Length != nil && c.Default != nil {
 		response += fmt.Sprintf(`SIZE:"%s"`, string(c.Default.Val))
 	}
 	return response + "`"
