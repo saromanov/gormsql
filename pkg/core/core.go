@@ -4,7 +4,7 @@ package core
 import (
 	"os"
 	"reflect"
-
+	"strings"
 	"github.com/pkg/errors"
 )
 
@@ -51,7 +51,7 @@ func (c *Core) generate() (string, error) {
 	ref := []reflect.StructField{}
 	for _, col := range c.table.Columns {
 		v := reflect.StructField{
-			Name: col.Name,
+			Name: strings.Title(col.Name),
 		}
 		if col.Annotations != "" {
 			v.Tag = reflect.StructTag(col.Annotations)
