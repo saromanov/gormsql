@@ -66,6 +66,5 @@ func (c *Core) generate() (string, error) {
 		}
 		ref = append(ref, v)
 	}
-	fmt.Println(ref)
-	return reflect.StructOf(ref).String(), nil
+	return fmt.Sprintf("type Model %s", reflect.StructOf(ref).String()), nil
 }
