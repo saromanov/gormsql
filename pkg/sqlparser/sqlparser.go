@@ -37,13 +37,17 @@ func Parse(s string) (*core.Table, error) {
 			return nil, errors.Wrap(err, fmt.Sprintf("unexpected error on the table definition: %s", name))
 		}
 		table.Name = name
-		columns := []core.Column{}
+		columns := map[string]core.Column{}
 		for _, c := range result.TableSpec.Columns {
-			columns = append(columns, core.Column{
+			columns[c.Name.String()] = core.Column{
 				Name:        c.Name.String(),
 				Type:        c.Type.Type,
 				Annotations: consuructColumnAnnotation(c.Type),
-			})
+			}
+		}
+
+		for _, i := range result.TableSpec.Indexes {
+			fmt.Println(i.Columns[0])
 		}
 		table.Columns = columns
 	}
