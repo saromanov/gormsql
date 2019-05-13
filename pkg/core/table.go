@@ -10,4 +10,5 @@ type Column struct {
 	Name        string
 	Annotations string
 	Type        string
+	PrimaryKey  bool
 }

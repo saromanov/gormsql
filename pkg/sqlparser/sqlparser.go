@@ -47,7 +47,15 @@ func Parse(s string) (*core.Table, error) {
 		}
 
 		for _, i := range result.TableSpec.Indexes {
-			fmt.Println(i.Columns[0])
+			if i.Info.Primary {
+				for _, idx := range i.Columns {
+					data, ok := columns[idx.Column.String()]
+					if ok {
+						data.PrimaryKey = true
+						columns[idx.Column.String()] = data
+					}
+				}
+			}
 		}
 		table.Columns = columns
 	}
