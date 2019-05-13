@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strings"
 	"time"
+
 	"github.com/pkg/errors"
 )
 
@@ -59,6 +60,8 @@ func (c *Core) generate() (string, error) {
 			v.Tag = reflect.StructTag(col.Annotations)
 		}
 		switch col.Type {
+		case "float":
+			v.Type = reflect.TypeOf(float64(0))
 		case "varchar":
 			v.Type = reflect.TypeOf(string(""))
 		case "integer", "int":
