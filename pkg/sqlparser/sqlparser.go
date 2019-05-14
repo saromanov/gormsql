@@ -12,9 +12,15 @@ import (
 
 var errNotSupported = errors.New("not supported operation")
 
+// Index defines helpful struct for index definition
+type Index struct {
+	PrimaryKey bool
+}
+
 // Parse provides parsing of sql query
 func Parse(s string) (*core.Table, error) {
 	table := &core.Table{}
+	indexes := map[string]Index{}
 	stmt := sqlparser.NewStringTokenizer(s)
 	for {
 		stmt, err := sqlparser.ParseNext(stmt)
@@ -36,6 +42,20 @@ func Parse(s string) (*core.Table, error) {
 		if result.TableSpec == nil {
 			return nil, errors.Wrap(err, fmt.Sprintf("unexpected error on the table definition: %s", name))
 		}
+
+		for _, i := range result.TableSpec.Indexes {
+			if i.Info.Primary {
+				for _, idx := range i.Columns {
+					_, ok := indexes[idx.Column.String()]
+					if !ok {
+						indexes[idx.Column.String()] = Index{
+							PrimaryKey: true,
+						}
+					}
+				}
+			}
+		}
+
 		table.Name = name
 		columns := map[string]core.Column{}
 		for _, c := range result.TableSpec.Columns {
@@ -43,18 +63,6 @@ func Parse(s string) (*core.Table, error) {
 				Name:        c.Name.String(),
 				Type:        c.Type.Type,
 				Annotations: consuructColumnAnnotation(c.Type),
-			}
-		}
-
-		for _, i := range result.TableSpec.Indexes {
-			if i.Info.Primary {
-				for _, idx := range i.Columns {
-					data, ok := columns[idx.Column.String()]
-					if ok {
-						data.PrimaryKey = true
-						columns[idx.Column.String()] = data
-					}
-				}
 			}
 		}
 		table.Columns = columns
