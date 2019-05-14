@@ -59,10 +59,11 @@ func Parse(s string) (*core.Table, error) {
 		table.Name = name
 		columns := map[string]core.Column{}
 		for _, c := range result.TableSpec.Columns {
+			idx, _ := indexes[c.Name.String()]
 			columns[c.Name.String()] = core.Column{
 				Name:        c.Name.String(),
 				Type:        c.Type.Type,
-				Annotations: consuructColumnAnnotation(c.Type),
+				Annotations: consuructColumnAnnotation(c.Type, idx),
 			}
 		}
 		table.Columns = columns
@@ -71,7 +72,7 @@ func Parse(s string) (*core.Table, error) {
 }
 
 // constructColumnAnnotation adds gorm annotations to the model
-func consuructColumnAnnotation(c sqlparser.ColumnType) string {
+func consuructColumnAnnotation(c sqlparser.ColumnType, idx Index) string {
 	startGorm := "`gorm:`"
 	response := startGorm
 	if c.NotNull {
@@ -79,6 +80,9 @@ func consuructColumnAnnotation(c sqlparser.ColumnType) string {
 	}
 	if c.Autoincrement {
 		response += "AUTOINCREMENT;"
+	}
+	if idx.PrimaryKey {
+		response += "PRIMARY_KEY;"
 	}
 	if c.Default != nil {
 		response += fmt.Sprintf("DEFAULT:`%s`", string(c.Default.Val))
