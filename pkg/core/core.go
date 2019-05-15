@@ -66,6 +66,8 @@ func (c *Core) generate() (string, error) {
 			v.Type = reflect.TypeOf(string(""))
 		case "integer", "int", "tinyint":
 			v.Type = reflect.TypeOf(int(0))
+		case "bigint":
+			v.Type = reflect.TypeOf(int64(0))
 		case "timestamp":
 			v.Type = reflect.TypeOf(time.Time{})
 		}
