@@ -64,7 +64,7 @@ func (c *Core) generate() (string, error) {
 			v.Type = reflect.TypeOf(float64(0))
 		case "varchar":
 			v.Type = reflect.TypeOf(string(""))
-		case "integer", "int":
+		case "integer", "int", "tinyint":
 			v.Type = reflect.TypeOf(int(0))
 		case "timestamp":
 			v.Type = reflect.TypeOf(time.Time{})
