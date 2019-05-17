@@ -15,12 +15,12 @@ var errNoName = errors.New("name is not defined")
 
 // Core defines main logic of the app
 type Core struct {
-	tables   []Table
+	tables   map[string]*Table
 	fileName string
 }
 
 // New creates core object
-func New(filename string, t []Table) *Core {
+func New(filename string, t map[string]*Table) *Core {
 	return &Core{
 		tables:   t,
 		fileName: filename,
@@ -40,7 +40,7 @@ func (c *Core) Do() error {
 
 	result := ""
 	for _, t := range c.tables {
-		res, err := c.generate(t)
+		res, err := c.generate(*t)
 		if err != nil {
 			return errors.Wrap(err, "unable to generate model")
 		}
