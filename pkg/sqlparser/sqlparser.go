@@ -18,9 +18,9 @@ type Index struct {
 }
 
 // Parse provides parsing of sql query
-func Parse(s string) (*core.Table, error) {
-	table := &core.Table{}
+func Parse(s string) (map[string]*core.Table, error) {
 	indexes := map[string]Index{}
+	tables := map[string]*core.Table{}
 	stmt := sqlparser.NewStringTokenizer(s)
 	for {
 		stmt, err := sqlparser.ParseNext(stmt)
@@ -55,8 +55,7 @@ func Parse(s string) (*core.Table, error) {
 				}
 			}
 		}
-
-		table.Name = name
+		table := &core.Table{Name: name}
 		columns := map[string]core.Column{}
 		for _, c := range result.TableSpec.Columns {
 			idx, _ := indexes[c.Name.String()]
@@ -67,8 +66,9 @@ func Parse(s string) (*core.Table, error) {
 			}
 		}
 		table.Columns = columns
+		tables[name] = table
 	}
-	return table, nil
+	return tables, nil
 }
 
 // constructColumnAnnotation adds gorm annotations to the model
