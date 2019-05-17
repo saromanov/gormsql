@@ -13,12 +13,13 @@ import (
 
 var errNoName = errors.New("name is not defined")
 
+// Core defines main logic of the app
 type Core struct {
-	table Table
+	tables []Table
 }
 
 // New creates core object
-func New(t Table) *Core {
+func New(t []Table) *Core {
 	return &Core{
 		table: t,
 	}

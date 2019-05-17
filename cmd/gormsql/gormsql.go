@@ -16,12 +16,12 @@ func createModelFromTables(path string) error {
 		return fmt.Errorf("unable to read from file: %v", err)
 	}
 
-	table, err := sqlparser.Parse(string(dat))
+	tables, err := sqlparser.Parse(string(dat))
 	if err != nil {
 		return fmt.Errorf("unable to parse file: %v", err)
 	}
 
-	c := core.New(*table)
+	c := core.New(tables)
 	if err := c.Do(); err != nil {
 		return fmt.Errorf("unable to apply generation: %v", err)
 	}
