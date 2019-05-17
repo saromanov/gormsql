@@ -17,13 +17,15 @@ var errNoName = errors.New("name is not defined")
 type Core struct {
 	tables   map[string]*Table
 	fileName string
+	dirName  string
 }
 
 // New creates core object
-func New(filename string, t map[string]*Table) *Core {
+func New(dirName, filename string, t map[string]*Table) *Core {
 	return &Core{
 		tables:   t,
 		fileName: filename,
+		dirName:  dirName,
 	}
 }
 
@@ -79,5 +81,5 @@ func (c *Core) generate(tab Table) (string, error) {
 		}
 		ref = append(ref, v)
 	}
-	return fmt.Sprintf("type %s %s", strings.Title(tab.Name), reflect.StructOf(ref).String()), nil
+	return fmt.Sprintf("type %s %s", c.fileName, strings.Title(tab.Name), reflect.StructOf(ref).String()), nil
 }

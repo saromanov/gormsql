@@ -21,12 +21,22 @@ func createModelFromTables(path string) error {
 		return fmt.Errorf("unable to parse file: %v", err)
 	}
 
-	c := core.New("test", tables)
+	dir, err := getCurrentDirName()
+	if err != nil {
+		return fmt.Errorf("unable to get directory name: %v", err)
+	}
+	c := core.New(dir, "test", tables)
 	if err := c.Do(); err != nil {
 		return fmt.Errorf("unable to apply generation: %v", err)
 	}
 	return nil
 }
+
+// getCurrentDirName retruns current directory name
+func getCurrentDirName() (string, error) {
+	return os.Getwd()
+}
+
 func run(path string) error {
 	return createModelFromTables(path)
 }
