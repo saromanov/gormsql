@@ -81,5 +81,5 @@ func (c *Core) generate(tab Table) (string, error) {
 		}
 		ref = append(ref, v)
 	}
-	return fmt.Sprintf("type %s %s", c.fileName, strings.Title(tab.Name), reflect.StructOf(ref).String()), nil
+	return fmt.Sprintf("type %s %s", strings.Title(tab.Name), reflect.StructOf(ref).String()), nil
 }
