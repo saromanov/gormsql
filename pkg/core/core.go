@@ -40,7 +40,7 @@ func (c *Core) Do() error {
 		return errors.Wrap(err, "unable to create file")
 	}
 
-	result := ""
+	result := "package test\n"
 	for _, t := range c.tables {
 		res, err := c.generate(*t)
 		if err != nil {
