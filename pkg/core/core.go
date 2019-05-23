@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var errNoName = errors.New("name is not defined")
+var errNoName = errors.New("file name is not defined")
 
 // Core defines main logic of the app
 type Core struct {
