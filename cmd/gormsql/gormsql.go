@@ -42,6 +42,13 @@ func run(path string) error {
 }
 func main() {
 	app := cli.NewApp()
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "dir",
+			Value: ".",
+			Usage: "link to the dir for generated model",
+		},
+	}
 	app.Name = "gormsql"
 	app.Usage = "checking of availability of sites"
 	app.Commands = []cli.Command{
@@ -51,7 +58,8 @@ func main() {
 			Usage:   "path to the dir or file",
 			Action: func(c *cli.Context) error {
 				modelPath := c.Args().First()
-				fmt.Println("MODEL: ", modelPath)
+				dir := c.String("dir")
+				fmt.Println(dir)
 				if err := run(modelPath); err != nil {
 					panic(err)
 				}
