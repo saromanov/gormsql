@@ -49,24 +49,17 @@ func main() {
 			Usage: "link to the dir for generated model",
 		},
 	}
+	app.Action = func(c *cli.Context) error {
+		modelPath := c.Args().First()
+		dir := c.String("dir")
+		fmt.Println(dir)
+		if err := run(modelPath); err != nil {
+			panic(err)
+		}
+		return nil
+	}
 	app.Name = "gormsql"
 	app.Usage = "checking of availability of sites"
-	app.Commands = []cli.Command{
-		{
-			Name:    "generate",
-			Aliases: []string{"g"},
-			Usage:   "path to the dir or file",
-			Action: func(c *cli.Context) error {
-				modelPath := c.Args().First()
-				dir := c.String("dir")
-				fmt.Println(dir)
-				if err := run(modelPath); err != nil {
-					panic(err)
-				}
-				return nil
-			},
-		},
-	}
 	err := app.Run(os.Args)
 	if err != nil {
 		panic(err)
