@@ -1,4 +1,6 @@
 # gormsql
+[![Go Report Card](https://goreportcard.com/badge/github.com/saromanov/gormsql)](https://goreportcard.com/report/github.com/saromanov/gormsql)
+
 
 Generating of the models for gorm from sql
 
