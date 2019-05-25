@@ -4,10 +4,10 @@ package core
 import (
 	"fmt"
 	"os"
+	"path"
 	"reflect"
 	"strings"
 	"time"
-	"path"
 
 	"github.com/pkg/errors"
 )
@@ -48,7 +48,7 @@ func (c *Core) Do() error {
 		return errors.Wrap(err, "unable to create file")
 	}
 
-	result := fmt.Sprintf("package %s\n", c.fileName)
+	result := fmt.Sprintf("package %s\n", c.dirName)
 	for _, t := range c.tables {
 		res, err := c.generate(*t)
 		if err != nil {
