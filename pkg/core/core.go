@@ -35,7 +35,11 @@ func (c *Core) Do() error {
 		return errNoName
 	}
 
-	f, err := os.Create(c.fileName + ".go")
+	outPath := c.fileName
+	if c.dirName != "" {
+		outPath = c.dirName + "/" + c.fileName
+	}
+	f, err := os.Create(outPath + ".go")
 	if err != nil {
 		return errors.Wrap(err, "unable to create file")
 	}

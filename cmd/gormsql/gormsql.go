@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-func createModelFromTables(path string) error {
+func createModelFromTables(dirpath, path string) error {
 	dat, err := ioutil.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("unable to read from file: %v", err)
@@ -21,11 +21,14 @@ func createModelFromTables(path string) error {
 		return fmt.Errorf("unable to parse file: %v", err)
 	}
 
-	dir, err := getCurrentDirName()
-	if err != nil {
-		return fmt.Errorf("unable to get directory name: %v", err)
+	dir := dirpath
+	if dir == "" {
+		dir, err = getCurrentDirName()
+		if err != nil {
+			return fmt.Errorf("unable to get directory name: %v", err)
+		}
 	}
-	c := core.New(dir, "test", tables)
+	c := core.New(dir, path, tables)
 	if err := c.Do(); err != nil {
 		return fmt.Errorf("unable to apply generation: %v", err)
 	}
@@ -37,8 +40,8 @@ func getCurrentDirName() (string, error) {
 	return os.Getwd()
 }
 
-func run(path string) error {
-	return createModelFromTables(path)
+func run(dirpath, path string) error {
+	return createModelFromTables(dirpath, path)
 }
 func main() {
 	app := cli.NewApp()
@@ -52,8 +55,7 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		modelPath := c.Args().First()
 		dir := c.String("dir")
-		fmt.Println(dir)
-		if err := run(modelPath); err != nil {
+		if err := run(dir, modelPath); err != nil {
 			panic(err)
 		}
 		return nil
