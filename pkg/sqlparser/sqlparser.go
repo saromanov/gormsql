@@ -68,6 +68,9 @@ func Parse(s string) (map[string]*core.Table, error) {
 		table.Columns = columns
 		tables[name] = table
 	}
+	if len(tables) == 0 {
+		return nil, fmt.Errorf("unable to generate data")
+	}
 	return tables, nil
 }
 
