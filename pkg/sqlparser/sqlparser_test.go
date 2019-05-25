@@ -20,13 +20,13 @@ func TestParse(t *testing.T) {
 	  );
 	`)
 	assert.NoError(t, err)
-	_, ok := res["app_user"]
+	table, ok := res["app_user"]
 	if !ok {
 		t.Errorf("should contains app_user")
 	}
-	_, ok = res["id"]
-	if !ok {
-		t.Errorf("should contains username")
+	if table == nil {
+		t.Errorf("table is not exist")
 	}
-	assert.NoError(t, err)
+	assert.Equal(t, "app_user", table.Name)
+	assert.Equal(t, 2, len(table.Columns))
 }
