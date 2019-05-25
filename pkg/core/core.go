@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strings"
 	"time"
+	"path"
 
 	"github.com/pkg/errors"
 )
@@ -37,7 +38,10 @@ func (c *Core) Do() error {
 
 	outPath := c.fileName
 	if c.dirName != "" {
-		outPath = c.dirName + "/" + c.fileName
+		if err := os.MkdirAll(c.dirName, os.ModePerm); err != nil {
+			return err
+		}
+		outPath = c.dirName + "/" + path.Base(c.fileName)
 	}
 	f, err := os.Create(outPath + ".go")
 	if err != nil {
